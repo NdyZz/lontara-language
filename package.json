@@ -1,8 +1,7 @@
 {
-  "name": "aksara-lontara-lang",
+  "name": "lontara-language",
   "version": "1.0.0",
   "description": "aksara lontara programming language",
-  "type": "module",
   "main": "lontara-interpreter.js",
   "bin": {
     "ugi": "lontara-interpreter.js"
@@ -13,14 +12,17 @@
   "directories": {
     "example": "example"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NdyZz/lontara-language.git"
+  },
   "author": "NdyZz",
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/NdyZz/lontara-language/issues"
+  },
+  "homepage": "https://github.com/NdyZz/lontara-language#readme",
   "devDependencies": {
     "jest": "^27.5.1"
-  },
-  "dependencies": {
-    "@babel/parser": "^7.28.4",
-    "acorn": "^8.15.0",
-    "esprima": "^4.0.1"
   }
 }

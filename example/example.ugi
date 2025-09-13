@@ -1,10 +1,9 @@
-ᨀᨛᨒᨔᨛ Hewan
- ᨕᨈᨚᨑᨚ nama(val)
-   ᨒᨕᨙ _nama = val
- ᨌᨄᨊ
- ᨕᨒᨕᨗ nama()
-   ᨄᨒᨗᨔᨘᨕᨗ _nama
- ᨌᨄᨊ
-ᨌᨄᨊ
+ᨐᨈᨙᨁ x = 4
 
-ᨆᨘᨕᨗᨈᨕᨗ new Hewan("harimau").nama()
+ᨊᨑᨙᨀᨚ x > 5
+ ᨆᨘᨕᨗᨈᨕᨗ "lebih besar"
+ᨕᨗᨐᨑᨙᨋᨊᨑᨙ x < 5
+ ᨆᨘᨕᨗᨈᨕᨗ "lebih kecil"
+ᨊᨑᨙᨀᨚᨉᨙ
+ ᨆᨘᨕᨗᨈᨕᨗ "sama"
+ᨌᨄᨊ

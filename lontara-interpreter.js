@@ -1,5 +1,5 @@
-import fs from "fs";
-import { flexing, execCmd } from "./lib/utils/index.js";
+const fs = require("fs");
+const { flexing, execCmd } = require("./lib/utils/index.js");
 
 // ================= Engine =====================
 let fileLocate = null;
@@ -8,7 +8,7 @@ const parseArgs = () => {
 
   if (args.length < 3) {
     console.log(
-      "Require file args, ex: 'node lontara-interpreter.js example/main.ugi' or 'lontara example/main.ugi'"
+      "Require file args, ex: 'node lontara-interpreter.js example/main.ugi' or 'ugi example/main.ugi'"
     );
     return false;
   }
@@ -29,5 +29,5 @@ if (!parseArgs()) {
 const inputbugis = fs.readFileSync(fileLocate, "utf-8");
 
 const result = flexing(inputbugis);
-console.log(result)
+//console.log(result)
 execCmd(result);
