@@ -1,0 +1,26 @@
+{
+  "name": "aksara-lontara-lang",
+  "version": "1.0.0",
+  "description": "aksara lontara programming language",
+  "type": "module",
+  "main": "lontara-interpreter.js",
+  "bin": {
+    "ugi": "lontara-interpreter.js"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "directories": {
+    "example": "example"
+  },
+  "author": "NdyZz",
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^27.5.1"
+  },
+  "dependencies": {
+    "@babel/parser": "^7.28.4",
+    "acorn": "^8.15.0",
+    "esprima": "^4.0.1"
+  }
+}

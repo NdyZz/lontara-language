@@ -1,0 +1,10 @@
+ᨀᨛᨒᨔᨛ Hewan
+ ᨕᨈᨚᨑᨚ nama(val)
+   ᨒᨕᨙ _nama = val
+ ᨌᨄᨊ
+ ᨕᨒᨕᨗ nama()
+   ᨄᨒᨗᨔᨘᨕᨗ _nama
+ ᨌᨄᨊ
+ᨌᨄᨊ
+
+ᨆᨘᨕᨗᨈᨕᨗ new Hewan("harimau").nama()

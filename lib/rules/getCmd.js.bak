@@ -1,0 +1,240 @@
+const vm = require('vm');
+const valueTransform = require("../utils/valueTransform.js")
+const mapCompare = require("../utils/mapCompare.js")
+
+console.log(mapCompare)
+
+const parsers = (line) => {
+  let m;
+  
+  // console.log
+  m = line.match(/tampil (.*)/);
+  if (m) return {
+    exp: `console.log(${m[1]})`,
+  };
+
+  // IF / ELSE IF / ELSE
+  m = line.match(/ᨊᨑᨙᨀᨚ ([a-zA-Z0-9]+) (.*) ([^\[\]\(\)\n]+)/);
+  if (m) return {
+    exp: `if (${m[1]} ${m[2]} ${valueTransform(m[3])})`,
+    openGroup: true,
+  };
+
+  m = line.match(/ᨕᨗᨐᨑᨙᨋᨊᨑᨙ ([a-zA-Z0-9]+) (.*) ([^\[\]\(\)\n]+)/);
+  if (m) return {
+    exp: `else if (${m[1]} ${m[2]} ${valueTransform(m[3])})`,
+    closeGroup: true,
+    openGroup: true,
+  };
+
+  if (/^ᨊᨑᨙᨀᨚᨉᨙ$/.test(line.trim())) return {
+    exp: `else`,
+    closeGroup: true,
+    openGroup: true,
+  };
+
+  // SWITCH / CASE / DEFAULT
+  m = line.match(/pilih (.+)/);
+  if (m) return {
+    exp: `switch (${m[1]}) {`,
+    openGroup: true
+  };
+
+  m = line.match(/kasus (.+)/);
+  if (m) return {
+    exp: `case ${valueTransform(m[1])}:`,
+    openGroup: false
+  };
+
+  if (/^baku$/.test(line.trim())) return {
+    exp: "default:",
+    openGroup: false
+  };
+
+  // FOR
+  m = line.match(/untuk ([a-zA-Z0-9_]+) dari (\d+) sampai (\d+)/);
+  if (m) return {
+    exp: `for (let ${m[1]} = ${m[2]}; ${m[1]} <= ${m[3]}; ${m[1]}++) {`,
+    openGroup: true
+  };
+
+  // WHILE
+  m = line.match(/selama (.+)/);
+  if (m) return {
+    exp: `while (${m[1]}) {`,
+    openGroup: true
+  };
+
+  // DO WHILE
+  if (/^lakukan$/.test(line.trim())) return {
+    exp: "do {",
+    openGroup: true
+  };
+
+  m = line.match(/selamaAkhir (.+)/);
+  if (m) return {
+    exp: `} while (${m[1]});`,
+    openGroup: false
+  };
+
+  // FUNCTION
+  m = line.match(/fungsi ([a-zA-Z0-9_]+)\((.*?)\)/);
+  if (m) {
+    let params = m[2].split(",").map(p => p.trim()).filter(Boolean).join(", ");
+    return {
+      exp: `function ${m[1]}(${params}) {`,
+      openGroup: true
+    };
+  }
+
+  // ARROW FUNCTION
+  m = line.match(/fungsiPanah ([a-zA-Z0-9_]+) = \((.*?)\) => (.+)/);
+  if (m) {
+    return {
+      exp: `const ${m[1]} = (${m[2]}) => ${m[3]};`,
+      openGroup: false
+    };
+  }
+
+  // RETURN
+  m = line.match(/kembali (.+)/);
+  if (m) return {
+    exp: `return ${valueTransform(m[1])};`,
+    openGroup: false
+  };
+
+  // CLASS
+  m = line.match(/kelas ([a-zA-Z0-9_]+)( turunan ([a-zA-Z0-9_]+))?/);
+  if (m) return {
+    exp: `class ${m[1]}${m[3] ? ` extends ${m[3]}`: ""} {`,
+    openGroup: true
+  };
+
+  // GETTER/SETTER
+  m = line.match(/ambil ([a-zA-Z0-9_]+)\(\)/);
+  if (m) return {
+    exp: `get ${m[1]}() {`,
+    openGroup: true
+  };
+  m = line.match(/atur ([a-zA-Z0-9_]+)\((.+)\)/);
+  if (m) return {
+    exp: `set ${m[1]}(${m[2]}) {`,
+    openGroup: true
+  };
+
+  // ASYNC FUNCTION
+  m = line.match(/asin fungsi ([a-zA-Z0-9_]+)\((.*?)\)/);
+  if (m) {
+    let params = m[2].split(",").map(p => p.trim()).filter(Boolean).join(", ");
+    return {
+      exp: `async function ${m[1]}(${params}) {`,
+      openGroup: true
+    };
+  }
+
+  // AWAIT
+  m = line.match(/tunggu (.+)/);
+  if (m) return {
+    exp: `await ${m[1]};`,
+    openGroup: false
+  };
+
+  // TRY CATCH FINALLY
+  if (/^coba$/.test(line.trim())) return {
+    exp: "try {",
+    openGroup: true
+  };
+  m = line.match(/tangkap \((.+)\)/);
+  if (m) return {
+    exp: `catch (${m[1]}) {`,
+    openGroup: true
+  };
+  if (/^akhirnya$/.test(line.trim())) return {
+    exp: "finally {",
+    openGroup: true
+  };
+
+  // IMPORT / EXPORT
+  m = line.match(/impor (.+) dari ["'](.+)["']/);
+  if (m) return {
+    exp: `import ${m[1]} from "${m[2]}";`,
+    openGroup: false
+  };
+
+  m = line.match(/ekspor (.+)/);
+  if (m) return {
+    exp: `export ${m[1]};`,
+    openGroup: false
+  };
+
+  // VARIABLE (let, const, var)
+  m = line.match(/biarkan ([a-zA-Z0-9_]+) = (.+)/);
+  if (m) return {
+    exp: `let ${m[1]} = ${valueTransform(m[2])};`,
+    openGroup: false
+  };
+
+  m = line.match(/konstanta ([a-zA-Z0-9_]+) = (.+)/);
+  if (m) return {
+    exp: `const ${m[1]} = ${valueTransform(m[2])};`,
+    openGroup: false
+  };
+
+  m = line.match(/variabel ([a-zA-Z0-9_]+) = (.+)/);
+  if (m) return {
+    exp: `var ${m[1]} = ${valueTransform(m[2])};`,
+    openGroup: false
+  };
+
+  // BREAK / CONTINUE / THROW
+  if (/^henti$/.test(line.trim())) return {
+    exp: "break;",
+    openGroup: false
+  };
+  if (/^lanjut$/.test(line.trim())) return {
+    exp: "continue;",
+    openGroup: false
+  };
+  m = line.match(/lempar (.+)/);
+  if (m) return {
+    exp: `throw ${m[1]};`,
+    openGroup: false
+  };
+
+  // WITH
+  m = line.match(/dengan \((.+)\)/);
+  if (m) return {
+    exp: `with (${m[1]}) {`,
+    openGroup: true
+  };
+
+  // SPREAD / REST (manual)
+  m = line.match(/sebar (.+)/);
+  if (m) return {
+    exp: `...${m[1]}`,
+  };
+  m = line.match(/sisa (.+)/);
+  if (m) return {
+    exp: `...${m[1]}`,
+  };
+
+  // OPTIONAL CHAINING
+  m = line.match(/opsional (.+)/);
+  if (m) return {
+    exp: `${m[1]}?.`,
+  };
+  
+  // DEFAULT
+  return null;
+}
+
+function getCmd(cmdLines) {
+  return cmdLines
+  .map((line) => {
+      let cmd = parsers(line)
+      return cmd;
+    })
+    .filter((v) => !!v);
+}
+
+module.exports = { getCmd };
