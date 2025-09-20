@@ -2,7 +2,7 @@ This project Just for fun!.
 
 ---
 
-#lontara-language-script
+# lontara-language-script
 
 Lontara Script is a new programming language, very modern, easy to learn, using Indonesia-language. No programming experience required.
 
@@ -24,10 +24,10 @@ git clone https://github.com/NdyZz/lontara-language.git
 
 ### Run
 
-If you install from npm, run bugis script using `lontara` command
+If you install from npm, run bugis script using `ugi` command
 
 ```bash
-lontara example/example.ugi
+ugi example/example.ugi
 ```
 
 Or run from this repository
