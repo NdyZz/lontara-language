@@ -8,7 +8,7 @@ The Lontara script, also known as the Bugis script, Bugis-Makassar script, or Ne
 
 # lontara-language-script
 
-Lontara Script is a new programming language, very modern, easy to learn, using Indonesia-language. No programming experience required.
+Lontara lang Script is a new programming language, very modern, easy to learn, using Indonesia-language. No programming experience required.
 
 Thank you for all your contributions, share, star, and everything.
 
