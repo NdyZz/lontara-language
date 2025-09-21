@@ -72,6 +72,12 @@ Some command just like javascript, the only different is keyword and this langua
 
 - [List Command](Command.md)
 
+### Keyboard
+
+change the qwerty keyboard to the lontara keyboard
+how?
+settings keyboard > language > lontara(buginese) > switch (done)
+
 ### Disclaimer
 
 This project just for fun, I don't want to hurt anyone. Just from idea "what if lontara language is a programming language" and make it true. This project only for education purpose, not for production ready.
