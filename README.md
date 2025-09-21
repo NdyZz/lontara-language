@@ -2,7 +2,7 @@ This project Just for fun!.
 
 ---
 
-# what is lontara?
+# What is Lontara?
 
 The Lontara script, also known as the Bugis script, Bugis-Makassar script, or New Lontara script, is one of the traditional Indonesian scripts that developed in South Sulawesi and West Sulawesi.
 
