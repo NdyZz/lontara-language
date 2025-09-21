@@ -74,7 +74,7 @@ Some command just like javascript, the only different is keyword and this langua
 
 ### Keyboard
 
-change the qwerty keyboard to the lontara keyboard
+change the qwerty keyboard to the lontara keyboard.
 how?
 settings keyboard > language > lontara(buginese) > switch (done)
 
